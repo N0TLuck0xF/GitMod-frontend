@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitMod - World Class UI</title>
+  <!-- Google Fonts for a futuristic look -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables for consistent styling */
+    :root {
+      --neon-red: #ff073a;
+      --neon-green: #39ff14;
+      --space-blue: #0a0a23;
+      --dark-bg: #12122b;
+      --card-bg: rgba(18, 18, 43, 0.8);
+      --text-color: #ffffff;
+    }
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: radial-gradient(circle at top left, var(--space-blue), #010101);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    /* Header & Navigation */
+    header {
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.5);
+      border-bottom: 1px solid rgba(255, 7, 58, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: var(--neon-green);
+      text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+      animation: neonPulse 2s infinite alternate;
+    }
+    @keyframes neonPulse {
+      from { text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green); }
+      to { text-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-green); }
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: var(--neon-red);
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      background: var(--neon-red);
+      transition: width 0.3s ease;
+    }
+    nav a:hover {
+      color: var(--neon-green);
+    }
+    nav a:hover::after {
+      width: 100%;
+    }
+    /* Container */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem 0;
+    }
+    /* Main Content */
+    main {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 0 1rem;
+    }
+    /* Glassmorphic Card Styles */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 7, 58, 0.3);
+      border-radius: 10px;
+      padding: 2rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 20px rgba(255, 7, 58, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(255, 7, 58, 0.4);
+    }
+    .card h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--neon-red);
+      text-shadow: 0 0 5px var(--neon-red);
+    }
+    .card p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    /* Button Styling */
+    .btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      background: transparent;
+      border: 2px solid var(--neon-red);
+      color: var(--neon-red);
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .btn:hover {
+      background: var(--neon-red);
+      color: var(--space-blue);
+      transform: scale(1.05);
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(255, 7, 58, 0.3);
+      font-size: 0.9rem;
+      margin-top: 2rem;
+    }
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      header, .container {
+        padding: 1rem;
+      }
+      nav a {
+        font-size: 1rem;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      .card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <h1>GitMod</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Repositories</a></li>
+        <li><a href="#">Games</a></li>
+        <li><a href="#">Modding</a></li>
+        <li><a href="#">Hacking</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2>Welcome to GitMod</h2>
+      <p>
+        Collaborate, build, mod, and hack in a neon-lit, space-inspired environment.
+        Explore repositories, deploy games, and engage in ethical hacking challenges.
+      </p>
+      <button class="btn">Get Started</button>
+    </div>
+    <div class="card">
+      <h2>Featured Repository</h2>
+      <p>
+        Discover our latest project showcasing cutting-edge features and the vibrant GitMod community.
+      </p>
+      <a class="btn" href="#">View Repository</a>
+    </div>
+  </main>
+
+  <footer class="container">
+    <p>&copy; 2025 GitMod. All rights reserved.</p>
+  </footer>
+</body>
+</html>
