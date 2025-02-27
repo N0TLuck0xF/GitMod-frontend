@@ -9,12 +9,12 @@
   <style>
     /* CSS Variables for consistent styling */
     :root {
-      --neon-red: #ff073a;
-      --neon-green: #39ff14;
-      --space-blue: #0a0a23;
-      --dark-bg: #12122b;
-      --card-bg: rgba(18, 18, 43, 0.8);
-      --text-color: #ffffff;
+      --primary-blue: #1f2a44;
+      --accent-blue: #3a5a9a;
+      --highlight: #ff073a;
+      --light-text: #f0f0f0;
+      --card-bg: #242e48;
+      --modal-bg: rgba(0, 0, 0, 0.8);
     }
     /* Global Reset */
     * {
@@ -24,8 +24,8 @@
     }
     body {
       font-family: 'Roboto', sans-serif;
-      background: radial-gradient(circle at top left, var(--space-blue), #010101);
-      color: var(--text-color);
+      background: linear-gradient(135deg, #1f2a44, #101824);
+      color: var(--light-text);
       line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
@@ -36,22 +36,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(0,0,0,0.5);
-      border-bottom: 1px solid rgba(255, 7, 58, 0.3);
+      background: rgba(0,0,0,0.7);
+      border-bottom: 1px solid var(--accent-blue);
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 1100;
     }
     header h1 {
       font-family: 'Orbitron', sans-serif;
       font-size: 2.5rem;
-      color: var(--neon-green);
-      text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
-      animation: neonPulse 2s infinite alternate;
-    }
-    @keyframes neonPulse {
-      from { text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green); }
-      to { text-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-green); }
+      color: var(--accent-blue);
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     }
     nav ul {
       list-style: none;
@@ -61,7 +56,7 @@
     nav a {
       text-decoration: none;
       font-size: 1.2rem;
-      color: var(--neon-red);
+      color: var(--highlight);
       position: relative;
       transition: color 0.3s ease;
     }
@@ -72,11 +67,11 @@
       bottom: -4px;
       width: 0;
       height: 2px;
-      background: var(--neon-red);
+      background: var(--highlight);
       transition: width 0.3s ease;
     }
     nav a:hover {
-      color: var(--neon-green);
+      color: var(--accent-blue);
     }
     nav a:hover::after {
       width: 100%;
@@ -96,26 +91,24 @@
       gap: 2rem;
       padding: 0 1rem;
     }
-    /* Glassmorphic Card Styles */
+    /* Glassmorphic Card with 3D Effects */
     .card {
       background: var(--card-bg);
-      border: 1px solid rgba(255, 7, 58, 0.3);
       border-radius: 10px;
       padding: 2rem;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 20px rgba(255, 7, 58, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      transform: perspective(500px) translateZ(0);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 30px rgba(255, 7, 58, 0.4);
+      transform: perspective(500px) translateZ(10px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
     }
     .card h2 {
       font-family: 'Orbitron', sans-serif;
       font-size: 2rem;
       margin-bottom: 1rem;
-      color: var(--neon-red);
-      text-shadow: 0 0 5px var(--neon-red);
+      color: var(--highlight);
     }
     .card p {
       font-size: 1.1rem;
@@ -125,24 +118,24 @@
     .btn {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.1rem;
-      background: transparent;
-      border: 2px solid var(--neon-red);
-      color: var(--neon-red);
+      background: var(--highlight);
+      border: none;
+      color: #fff;
       padding: 0.8rem 1.5rem;
       border-radius: 5px;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .btn:hover {
-      background: var(--neon-red);
-      color: var(--space-blue);
-      transform: scale(1.05);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
     }
     /* Footer */
     footer {
       text-align: center;
       padding: 1.5rem 0;
-      border-top: 1px solid rgba(255, 7, 58, 0.3);
+      border-top: 1px solid var(--accent-blue);
       font-size: 0.9rem;
       margin-top: 2rem;
     }
@@ -161,6 +154,86 @@
         padding: 1.5rem;
       }
     }
+    /* Modal Styles for Login/Sign Up */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--modal-bg);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      padding: 2rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+      position: relative;
+      transform: perspective(500px) translateZ(0);
+      transition: transform 0.3s ease;
+    }
+    .modal-content:hover {
+      transform: perspective(500px) translateZ(10px);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .modal-header h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--highlight);
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--light-text);
+      cursor: pointer;
+    }
+    .tab-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 1rem;
+    }
+    .tab-buttons button {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      color: var(--light-text);
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    .tab-buttons button.active {
+      border-color: var(--highlight);
+    }
+    form {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    form.active {
+      display: flex;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background: #1f2a44;
+      color: var(--light-text);
+    }
   </style>
 </head>
 <body>
@@ -172,6 +245,7 @@
         <li><a href="#">Games</a></li>
         <li><a href="#">Modding</a></li>
         <li><a href="#">Hacking</a></li>
+        <li><a href="#" id="loginBtn">Login / Sign Up</a></li>
       </ul>
     </nav>
   </header>
@@ -180,8 +254,7 @@
     <div class="card">
       <h2>Welcome to GitMod</h2>
       <p>
-        Collaborate, build, mod, and hack in a neon-lit, space-inspired environment.
-        Explore repositories, deploy games, and engage in ethical hacking challenges.
+        Collaborate, build, mod, and hack in an enterprise-grade environment. Explore repositories, deploy games, and engage in ethical hacking challenges.
       </p>
       <button class="btn">Get Started</button>
     </div>
@@ -197,5 +270,78 @@
   <footer class="container">
     <p>&copy; 2025 GitMod. All rights reserved.</p>
   </footer>
+
+  <!-- Modal for Login / Sign Up -->
+  <div class="modal" id="auth-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Login</h3>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <div class="tab-buttons">
+        <button id="loginTab" class="active">Login</button>
+        <button id="signupTab">Sign Up</button>
+      </div>
+      <!-- Login Form -->
+      <form id="loginForm" class="active">
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <button class="btn" type="submit">Login</button>
+      </form>
+      <!-- Sign Up Form -->
+      <form id="signupForm">
+        <input type="text" placeholder="Username" required>
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <button class="btn" type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Modal toggling and tab switching
+    const loginBtn = document.getElementById('loginBtn');
+    const authModal = document.getElementById('auth-modal');
+    const closeModal = document.getElementById('closeModal');
+    const loginTab = document.getElementById('loginTab');
+    const signupTab = document.getElementById('signupTab');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const modalTitle = document.getElementById('modal-title');
+
+    loginBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      authModal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click', () => {
+      authModal.style.display = 'none';
+    });
+
+    // Switch to Login tab
+    loginTab.addEventListener('click', () => {
+      loginTab.classList.add('active');
+      signupTab.classList.remove('active');
+      loginForm.classList.add('active');
+      signupForm.classList.remove('active');
+      modalTitle.textContent = 'Login';
+    });
+
+    // Switch to Sign Up tab
+    signupTab.addEventListener('click', () => {
+      signupTab.classList.add('active');
+      loginTab.classList.remove('active');
+      signupForm.classList.add('active');
+      loginForm.classList.remove('active');
+      modalTitle.textContent = 'Sign Up';
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', (e) => {
+      if (e.target === authModal) {
+        authModal.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
