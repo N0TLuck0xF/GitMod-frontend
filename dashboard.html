@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GitMod Dashboard</title>
-  <!-- Google Fonts for a modern, refined look -->
+  <title>GitMod 2.0 - Next Generation Platform</title>
+  <!-- Google Fonts for modern typography -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* CSS Variables */
@@ -27,7 +27,7 @@
       background: var(--bg-dark);
       overflow-x: hidden;
     }
-    /* Three.js Background Canvas */
+    /* Three.js Animated Background Canvas */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -36,7 +36,7 @@
       height: 100%;
       z-index: -1;
     }
-    /* Animated Multicolor Text (for titles) */
+    /* Animated Multicolor Text */
     .multicolor {
       background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
       background-size: 300%;
@@ -45,7 +45,7 @@
       animation: colorShift 5s linear infinite;
     }
     @keyframes colorShift { 0% { background-position: 0%; } 100% { background-position: 300%; } }
-    /* Header & Navigation */
+    /* Header & Global Navigation */
     header {
       padding: 1.5rem 3rem;
       display: flex;
@@ -84,14 +84,14 @@
       margin: 2rem auto;
       padding: 1rem;
     }
-    /* Dashboard Navigation Tabs */
-    .dashboard-nav {
+    /* Platform Navigation Tabs */
+    .platform-nav {
       display: flex;
       gap: 1.5rem;
       margin-bottom: 2rem;
       border-bottom: 1px solid rgba(255,7,58,0.3);
     }
-    .dashboard-nav button {
+    .platform-nav button {
       background: none;
       border: none;
       color: var(--primary-light);
@@ -101,10 +101,10 @@
       border-bottom: 2px solid transparent;
       transition: border-color 0.3s ease;
     }
-    .dashboard-nav button.active { border-color: var(--accent-light); }
-    /* Dashboard Sections */
-    .dashboard-section { display: none; }
-    .dashboard-section.active { display: block; }
+    .platform-nav button.active { border-color: var(--accent-light); }
+    /* Platform Sections */
+    .platform-section { display: none; }
+    .platform-section.active { display: block; }
     /* Card Style */
     .card {
       background: var(--card-bg);
@@ -120,9 +120,13 @@
       transform: perspective(600px) translateZ(15px);
       box-shadow: 0 15px 40px rgba(0,0,0,0.8);
     }
-    .card h2 { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; margin-bottom: 1rem; }
+    .card h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
     .card p { font-size: 1.1rem; margin-bottom: 1.8rem; }
-    /* Enterprise-Grade Button */
+    /* Enterprise Button */
     .btn {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.1rem;
@@ -141,13 +145,48 @@
       background: var(--neon-blue);
       color: var(--bg-dark);
     }
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 2rem 0;
-      border-top: 1px solid rgba(255,7,58,0.3);
-      font-size: 0.9rem;
-      margin-top: 3rem;
+    /* Live Chat Widget */
+    .chat-widget {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .chat-message {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,7,58,0.3);
+    }
+    .chat-input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #555;
+      border-radius: 6px;
+      background: var(--bg-accent);
+      color: var(--primary-light);
+      margin-top: 0.5rem;
+    }
+    /* Profile Emblem Editor Modal */
+    .emblem-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--modal-bg);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+    }
+    .emblem-modal-content {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
     }
     @media (max-width: 768px) {
       header, .container { padding: 1rem; }
@@ -158,104 +197,134 @@
   </style>
 </head>
 <body>
-  <!-- Three.js Animated Background Canvas -->
+  <!-- Three.js Animated Background -->
   <canvas id="bg-canvas"></canvas>
-
+  
   <!-- Header & Global Navigation -->
   <header class="container">
-    <h1 class="multicolor">GitMod Dashboard</h1>
+    <h1 class="multicolor">GitMod 2.0</h1>
     <nav>
       <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="repositories.html">Repositories</a></li>
-        <li><a href="ci-cd.html">CI/CD</a></li>
-        <li><a href="modding.html">Modding</a></li>
-        <li><a href="hacking.html">Hacking</a></li>
-        <li><a href="integrations.html">Integrations</a></li>
-        <li><a href="logout.html">Logout</a></li>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Studio</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Integrations</a></li>
+        <li><a href="#">Logout</a></li>
       </ul>
     </nav>
   </header>
-
+  
   <div class="container">
-    <!-- Dashboard Navigation Tabs -->
-    <div class="dashboard-nav">
-      <button class="active" data-section="overview">Overview</button>
-      <button data-section="github">GitHub &amp; Actions</button>
-      <button data-section="ci">CI/CD Pipeline</button>
-      <button data-section="modsites">Modsites</button>
-      <button data-section="modding">Modding Playground</button>
-      <button data-section="hacking">Bug Bounties</button>
-      <button data-section="integrations">Integrations</button>
+    <!-- Platform Navigation Tabs -->
+    <div class="platform-nav">
+      <button class="active" data-section="dashboard">Dashboard</button>
+      <button data-section="community">Community</button>
+      <button data-section="livechat">Live Chat</button>
+      <button data-section="collab">Modding Sessions</button>
+      <button data-section="studio">Studio</button>
+      <button data-section="achievements">Achievements</button>
+      <button data-section="leaderboards">Leaderboards</button>
+      <button data-section="profile">Profile & Emblems</button>
     </div>
-
-    <!-- Dashboard Sections -->
-    <section id="overview" class="dashboard-section active">
+    
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="platform-section active">
       <div class="card">
         <h2 class="multicolor">Dashboard Overview</h2>
-        <p>Welcome back, [Username]! Here you can monitor project analytics, view notifications, and access your most-used features.</p>
+        <p>Welcome back, [Username]! Monitor analytics, check notifications, and view recent project activity.</p>
         <button class="btn">View Analytics</button>
       </div>
     </section>
-
-    <section id="github" class="dashboard-section">
+    
+    <!-- Community Section -->
+    <section id="community" class="platform-section">
       <div class="card">
-        <h2 class="multicolor">GitHub Integration</h2>
-        <p>Connect your GitHub account to sync repositories, issues, and pull requests. Enjoy advanced GitHub Actions integration for automated workflows.</p>
-        <button class="btn">Connect GitHub</button>
+        <h2 class="multicolor">Community Feed</h2>
+        <p>Stay updated with community posts, mod releases, and events. Engage with fellow modders.</p>
+        <button class="btn">Explore Community</button>
       </div>
     </section>
-
-    <section id="ci" class="dashboard-section">
+    
+    <!-- Live Chat Section -->
+    <section id="livechat" class="platform-section">
       <div class="card">
-        <h2 class="multicolor">CI/CD Pipeline</h2>
-        <p>Configure and manage your continuous integration and deployment pipelines with our integrated tools and visual dashboards.</p>
-        <button class="btn">Setup Pipeline</button>
+        <h2 class="multicolor">Live Chat</h2>
+        <div class="chat-widget" id="chatWidget">
+          <div class="chat-message">User1: Welcome to GitMod 2.0!</div>
+          <div class="chat-message">User2: Excited to collaborate!</div>
+        </div>
+        <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+        <button class="btn" id="sendChat">Send</button>
       </div>
     </section>
-
-    <section id="modsites" class="dashboard-section">
+    
+    <!-- Collaborative Modding Sessions -->
+    <section id="collab" class="platform-section">
       <div class="card">
-        <h2 class="multicolor">Modsites</h2>
-        <p>Create custom mod sites (similar to GitHub Pages) to showcase your projects and mods with a personal touch.</p>
-        <button class="btn">Create Modsite</button>
+        <h2 class="multicolor">Collaborative Modding</h2>
+        <p>Join live modding sessions, code collaboratively, and share feedback in real time using our integrated editor.</p>
+        <button class="btn">Start a Session</button>
       </div>
     </section>
-
-    <section id="modding" class="dashboard-section">
+    
+    <!-- Studio (Codespaces-Like Environment) -->
+    <section id="studio" class="platform-section">
       <div class="card">
-        <h2 class="multicolor">Modding Playground</h2>
-        <p>Access innovative tools to build, test, and deploy mods. Post bounties for your games and choose from a wide variety of open licenses.</p>
-        <button class="btn">Start Modding</button>
+        <h2 class="multicolor">Modding Studio</h2>
+        <p>Access a fully integrated coding environment to build, test, and deploy your mods with live previews and collaborative editing.</p>
+        <button class="btn">Open Studio</button>
       </div>
     </section>
-
-    <section id="hacking" class="dashboard-section">
+    
+    <!-- Achievements & Gamification -->
+    <section id="achievements" class="platform-section">
       <div class="card">
-        <h2 class="multicolor">Bug Bounties</h2>
-        <p>Report vulnerabilities, collaborate on fixes, and earn rewards. Join our ethical hacking community to improve software security.</p>
-        <button class="btn">View Bounties</button>
+        <h2 class="multicolor">Achievements & Rewards</h2>
+        <p>Earn badges, level up, and unlock exclusive rewards as you contribute. Track your prestige and progress.</p>
+        <button class="btn">View Achievements</button>
       </div>
     </section>
-
-    <section id="integrations" class="dashboard-section">
+    
+    <!-- Leaderboards -->
+    <section id="leaderboards" class="platform-section">
       <div class="card">
-        <h2 class="multicolor">Platform Integrations</h2>
-        <p>Integrate with over 150+ platforms including cloud providers, payment gateways, social media networks, and more using our API gateway and OAuth connectors.</p>
-        <button class="btn">Explore Integrations</button>
+        <h2 class="multicolor">Leaderboards</h2>
+        <p>See top contributors, trending projects, and modding champions. Compete for the top spot!</p>
+        <button class="btn">View Leaderboards</button>
+      </div>
+    </section>
+    
+    <!-- Profile & Emblem Customization -->
+    <section id="profile" class="platform-section">
+      <div class="card">
+        <h2 class="multicolor">Your Profile & Emblems</h2>
+        <p>Customize your profile with achievements, badges, and a personalized emblem. Upload or design your own emblem using our editor.</p>
+        <button class="btn" id="openEmblemEditor">Edit Emblem</button>
       </div>
     </section>
   </div>
-
+  
   <footer class="container">
-    <p>&copy; 2025 GitMod. All rights reserved.</p>
+    <p>&copy; 2025 GitMod 2.0. All rights reserved.</p>
   </footer>
-
+  
+  <!-- Emblem Editor Modal -->
+  <div class="emblem-modal" id="emblemModal">
+    <div class="emblem-modal-content">
+      <h2 class="multicolor">Emblem Editor</h2>
+      <p>Upload your custom emblem or use our code editor to design one.</p>
+      <input type="file" id="emblemUpload">
+      <textarea id="emblemCode" placeholder="Enter emblem code here..." style="width:100%; height:100px; margin-top:1rem; background: var(--bg-accent); color: var(--primary-light); border: 1px solid #555; border-radius:6px; padding:0.5rem;"></textarea>
+      <button class="btn" id="saveEmblem">Save Emblem</button>
+      <button class="btn" id="closeEmblemEditor" style="margin-left:1rem;">Close</button>
+    </div>
+  </div>
+  
   <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
-    // Three.js Animated Background
+    // Three.js Animated Background Setup
     const canvas = document.getElementById('bg-canvas');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -263,12 +332,7 @@
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     camera.position.z = 5;
     const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      wireframe: true,
-      opacity: 0.5,
-      transparent: true
-    });
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 0.5, transparent: true });
     const torusKnot = new THREE.Mesh(geometry, material);
     scene.add(torusKnot);
     function animate() {
@@ -285,9 +349,10 @@
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
     });
-    // Dashboard Navigation Switching
-    const navButtons = document.querySelectorAll('.dashboard-nav button');
-    const sections = document.querySelectorAll('.dashboard-section');
+    
+    // Platform Navigation Switching
+    const navButtons = document.querySelectorAll('.platform-nav button');
+    const sections = document.querySelectorAll('.platform-section');
     navButtons.forEach(button => {
       button.addEventListener('click', () => {
         navButtons.forEach(btn => btn.classList.remove('active'));
@@ -298,6 +363,39 @@
         });
       });
     });
+    
+    // Basic Chat Widget Functionality
+    const chatInput = document.getElementById('chatInput');
+    const chatWidget = document.getElementById('chatWidget');
+    const sendChat = document.getElementById('sendChat');
+    if(sendChat) {
+      sendChat.addEventListener('click', () => {
+        const message = chatInput.value.trim();
+        if(message !== "") {
+          const messageElem = document.createElement('div');
+          messageElem.classList.add('chat-message');
+          messageElem.textContent = "You: " + message;
+          chatWidget.appendChild(messageElem);
+          chatInput.value = "";
+          chatWidget.scrollTop = chatWidget.scrollHeight;
+        }
+      });
+    }
+    
+    // Emblem Editor Modal Controls
+    const emblemModal = document.getElementById('emblemModal');
+    const openEmblemEditor = document.getElementById('openEmblemEditor');
+    const closeEmblemEditor = document.getElementById('closeEmblemEditor');
+    if(openEmblemEditor) {
+      openEmblemEditor.addEventListener('click', () => {
+        emblemModal.style.display = 'flex';
+      });
+    }
+    if(closeEmblemEditor) {
+      closeEmblemEditor.addEventListener('click', () => {
+        emblemModal.style.display = 'none';
+      });
+    }
   </script>
 </body>
 </html>
