@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitMod Dashboard</title>
+  <!-- Google Fonts for a modern, refined look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables */
+    :root {
+      --bg-dark: #0d0d18;
+      --bg-accent: #1e1e30;
+      --primary-light: #f5f5f5;
+      --accent-light: #ff073a;
+      --neon-blue: #00d1ff;
+      --card-bg: rgba(30, 30, 48, 0.85);
+      --modal-bg: rgba(0, 0, 0, 0.9);
+    }
+    /* Global Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      color: var(--primary-light);
+      background: var(--bg-dark);
+      overflow-x: hidden;
+    }
+    /* Three.js Background Canvas */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    /* Animated Multicolor Text (for titles) */
+    .multicolor {
+      background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+      background-size: 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: colorShift 5s linear infinite;
+    }
+    @keyframes colorShift { 0% { background-position: 0%; } 100% { background-position: 300%; } }
+    /* Header & Navigation */
+    header {
+      padding: 1.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.5);
+      border-bottom: 1px solid rgba(255,7,58,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      backdrop-filter: blur(8px);
+    }
+    header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.8rem;
+      color: var(--neon-blue);
+      text-shadow: 0 4px 10px rgba(0,209,255,0.6);
+      transition: transform 0.3s ease;
+    }
+    header h1:hover { transform: scale(1.05); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+    nav a {
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: var(--accent-light);
+      transition: color 0.3s ease;
+    }
+    nav a:hover { color: var(--neon-blue); }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    /* Dashboard Navigation Tabs */
+    .dashboard-nav {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,7,58,0.3);
+    }
+    .dashboard-nav button {
+      background: none;
+      border: none;
+      color: var(--primary-light);
+      font-size: 1.1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    .dashboard-nav button.active { border-color: var(--accent-light); }
+    /* Dashboard Sections */
+    .dashboard-section { display: none; }
+    .dashboard-section.active { display: block; }
+    /* Card Style */
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      transform: perspective(600px) translateZ(0);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      margin-bottom: 2rem;
+    }
+    .card:hover {
+      transform: perspective(600px) translateZ(15px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    }
+    .card h2 { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; margin-bottom: 1rem; }
+    .card p { font-size: 1.1rem; margin-bottom: 1.8rem; }
+    /* Enterprise-Grade Button */
+    .btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      background: var(--accent-light);
+      border: none;
+      color: var(--bg-dark);
+      padding: 0.9rem 2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+      background: var(--neon-blue);
+      color: var(--bg-dark);
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid rgba(255,7,58,0.3);
+      font-size: 0.9rem;
+      margin-top: 3rem;
+    }
+    @media (max-width: 768px) {
+      header, .container { padding: 1rem; }
+      nav a { font-size: 1rem; }
+      header h1 { font-size: 2rem; }
+      .card { padding: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Three.js Animated Background Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Header & Global Navigation -->
+  <header class="container">
+    <h1 class="multicolor">GitMod Dashboard</h1>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="repositories.html">Repositories</a></li>
+        <li><a href="ci-cd.html">CI/CD</a></li>
+        <li><a href="modding.html">Modding</a></li>
+        <li><a href="hacking.html">Hacking</a></li>
+        <li><a href="integrations.html">Integrations</a></li>
+        <li><a href="logout.html">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <!-- Dashboard Navigation Tabs -->
+    <div class="dashboard-nav">
+      <button class="active" data-section="overview">Overview</button>
+      <button data-section="github">GitHub &amp; Actions</button>
+      <button data-section="ci">CI/CD Pipeline</button>
+      <button data-section="modsites">Modsites</button>
+      <button data-section="modding">Modding Playground</button>
+      <button data-section="hacking">Bug Bounties</button>
+      <button data-section="integrations">Integrations</button>
+    </div>
+
+    <!-- Dashboard Sections -->
+    <section id="overview" class="dashboard-section active">
+      <div class="card">
+        <h2 class="multicolor">Dashboard Overview</h2>
+        <p>Welcome back, [Username]! Here you can monitor project analytics, view notifications, and access your most-used features.</p>
+        <button class="btn">View Analytics</button>
+      </div>
+    </section>
+
+    <section id="github" class="dashboard-section">
+      <div class="card">
+        <h2 class="multicolor">GitHub Integration</h2>
+        <p>Connect your GitHub account to sync repositories, issues, and pull requests. Enjoy advanced GitHub Actions integration for automated workflows.</p>
+        <button class="btn">Connect GitHub</button>
+      </div>
+    </section>
+
+    <section id="ci" class="dashboard-section">
+      <div class="card">
+        <h2 class="multicolor">CI/CD Pipeline</h2>
+        <p>Configure and manage your continuous integration and deployment pipelines with our integrated tools and visual dashboards.</p>
+        <button class="btn">Setup Pipeline</button>
+      </div>
+    </section>
+
+    <section id="modsites" class="dashboard-section">
+      <div class="card">
+        <h2 class="multicolor">Modsites</h2>
+        <p>Create custom mod sites (similar to GitHub Pages) to showcase your projects and mods with a personal touch.</p>
+        <button class="btn">Create Modsite</button>
+      </div>
+    </section>
+
+    <section id="modding" class="dashboard-section">
+      <div class="card">
+        <h2 class="multicolor">Modding Playground</h2>
+        <p>Access innovative tools to build, test, and deploy mods. Post bounties for your games and choose from a wide variety of open licenses.</p>
+        <button class="btn">Start Modding</button>
+      </div>
+    </section>
+
+    <section id="hacking" class="dashboard-section">
+      <div class="card">
+        <h2 class="multicolor">Bug Bounties</h2>
+        <p>Report vulnerabilities, collaborate on fixes, and earn rewards. Join our ethical hacking community to improve software security.</p>
+        <button class="btn">View Bounties</button>
+      </div>
+    </section>
+
+    <section id="integrations" class="dashboard-section">
+      <div class="card">
+        <h2 class="multicolor">Platform Integrations</h2>
+        <p>Integrate with over 150+ platforms including cloud providers, payment gateways, social media networks, and more using our API gateway and OAuth connectors.</p>
+        <button class="btn">Explore Integrations</button>
+      </div>
+    </section>
+  </div>
+
+  <footer class="container">
+    <p>&copy; 2025 GitMod. All rights reserved.</p>
+  </footer>
+
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Three.js Animated Background
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      wireframe: true,
+      opacity: 0.5,
+      transparent: true
+    });
+    const torusKnot = new THREE.Mesh(geometry, material);
+    scene.add(torusKnot);
+    function animate() {
+      requestAnimationFrame(animate);
+      torusKnot.rotation.x += 0.01;
+      torusKnot.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    });
+    // Dashboard Navigation Switching
+    const navButtons = document.querySelectorAll('.dashboard-nav button');
+    const sections = document.querySelectorAll('.dashboard-section');
+    navButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        const target = button.getAttribute('data-section');
+        sections.forEach(section => {
+          section.id === target ? section.classList.add('active') : section.classList.remove('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
