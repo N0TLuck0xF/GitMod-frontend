@@ -7,10 +7,10 @@
   <!-- Google Fonts for a modern, refined look -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* CSS Variables for design consistency */
+    /* CSS Variables */
     :root {
-      --primary-dark: #0d0d18;
-      --accent-dark: #1e1e30;
+      --bg-dark: #0d0d18;
+      --bg-accent: #1e1e30;
       --primary-light: #f5f5f5;
       --accent-light: #ff073a;
       --neon-blue: #00d1ff;
@@ -23,20 +23,34 @@
       padding: 0;
       box-sizing: border-box;
     }
-    body {
+    html, body {
+      width: 100%;
+      height: 100%;
       font-family: 'Inter', sans-serif;
       color: var(--primary-light);
-      line-height: 1.6;
-      min-height: 100vh;
       overflow-x: hidden;
-      background: linear-gradient(135deg, var(--primary-dark), var(--accent-dark));
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
+      background: var(--bg-dark);
     }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    /* Three.js Canvas */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    /* Animated Multicolor Text */
+    .multicolor {
+      background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+      background-size: 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: colorShift 5s linear infinite;
+    }
+    @keyframes colorShift {
+      0% { background-position: 0%; }
+      100% { background-position: 300%; }
     }
     /* Header & Navigation */
     header {
@@ -103,7 +117,7 @@
       gap: 2.5rem;
       padding: 1rem 0;
     }
-    /* Enhanced Card with Depth and 3D Hover */
+    /* Enhanced Card with 3D Depth */
     .card {
       background: var(--card-bg);
       border-radius: 12px;
@@ -121,8 +135,6 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 2.2rem;
       margin-bottom: 1rem;
-      color: var(--accent-light);
-      text-shadow: 0 2px 6px rgba(255, 7, 58, 0.5);
     }
     .card p {
       font-size: 1.1rem;
@@ -135,7 +147,7 @@
       font-size: 1.1rem;
       background: var(--accent-light);
       border: none;
-      color: var(--primary-dark);
+      color: var(--bg-dark);
       padding: 0.9rem 2rem;
       border-radius: 6px;
       cursor: pointer;
@@ -146,7 +158,7 @@
       transform: translateY(-4px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
       background: var(--neon-blue);
-      color: var(--primary-dark);
+      color: var(--bg-dark);
     }
     /* Footer Styling */
     footer {
@@ -233,7 +245,7 @@
       padding: 0.9rem;
       border: 1px solid #555;
       border-radius: 6px;
-      background: var(--accent-dark);
+      background: var(--bg-accent);
       color: var(--primary-light);
     }
     /* Responsive Adjustments */
@@ -254,8 +266,11 @@
   </style>
 </head>
 <body>
+  <!-- Three.js Background Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
   <header class="container">
-    <h1>GitMod</h1>
+    <h1 class="multicolor">GitMod</h1>
     <nav>
       <ul>
         <li><a href="#">Repositories</a></li>
@@ -269,16 +284,16 @@
 
   <main class="container">
     <div class="card">
-      <h2>Welcome to GitMod</h2>
+      <h2 class="multicolor">Welcome to GitMod</h2>
       <p>
-        Collaborate, build, mod, and hack in an ultra-modern, enterprise-grade environment. Experience next‑level features and design.
+        Collaborate, build, mod, and hack in an ultra-modern, enterprise‑grade environment. Experience next‑level features and design.
       </p>
       <button class="btn">Get Started</button>
     </div>
     <div class="card">
-      <h2>Featured Repository</h2>
+      <h2 class="multicolor">Featured Repository</h2>
       <p>
-        Discover our latest project showcasing cutting-edge innovations and a dynamic community spirit.
+        Discover our latest project showcasing cutting‑edge innovations and a dynamic community spirit.
       </p>
       <a class="btn" href="#">View Repository</a>
     </div>
@@ -315,7 +330,45 @@
     </div>
   </div>
 
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
+    // Three.js Animated Background
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+    
+    // Create a rotating, wireframe torus knot
+    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      wireframe: true,
+      opacity: 0.5,
+      transparent: true
+    });
+    const torusKnot = new THREE.Mesh(geometry, material);
+    scene.add(torusKnot);
+    
+    function animate() {
+      requestAnimationFrame(animate);
+      torusKnot.rotation.x += 0.01;
+      torusKnot.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+    animate();
+    
+    window.addEventListener('resize', () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    });
+    
     // Modal toggling and tab switching
     const loginBtn = document.getElementById('loginBtn');
     const authModal = document.getElementById('auth-modal');
@@ -325,17 +378,16 @@
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
     const modalTitle = document.getElementById('modal-title');
-
+    
     loginBtn.addEventListener('click', (e) => {
       e.preventDefault();
       authModal.style.display = 'flex';
     });
-
+    
     closeModal.addEventListener('click', () => {
       authModal.style.display = 'none';
     });
-
-    // Switch to Login tab
+    
     loginTab.addEventListener('click', () => {
       loginTab.classList.add('active');
       signupTab.classList.remove('active');
@@ -343,8 +395,7 @@
       signupForm.classList.remove('active');
       modalTitle.textContent = 'Login';
     });
-
-    // Switch to Sign Up tab
+    
     signupTab.addEventListener('click', () => {
       signupTab.classList.add('active');
       loginTab.classList.remove('active');
@@ -352,8 +403,7 @@
       loginForm.classList.remove('active');
       modalTitle.textContent = 'Sign Up';
     });
-
-    // Close modal when clicking outside the modal content
+    
     window.addEventListener('click', (e) => {
       if (e.target === authModal) {
         authModal.style.display = 'none';
